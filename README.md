@@ -21,12 +21,14 @@ I've been busy, so I mostly listen to books and podcasts instead of reading. Two
 
 ## Task 3 - The Path To Production
 
-I would first add integration tests using MockMvc for example. I would call the endpoints using the get() or post() methods for example, and expect certain results. Once my code is
-done (team has to define what done means though), it has to go into a repository where other team members have access. I would create build plans (on Bamboo for example) to ensure
-that the builds stay green with every change. I would also put in place quality gates (Sonar for example):
+- I would first add integration tests using MockMvc for example. 
+I would call the endpoints using the get() or post() methods for example, and expect certain results.
+- Once my code is done (team has to define what done means though), it has to go into a repository where other team members have access. 
+I would create build plans (on Bamboo for example) to ensure that the builds stay green with every change. 
+I would also put in place quality gates (Sonar for example):
 if the builds are not green or the quality gates are not passed, a pull request, hence a merge, shall not be allowed. I would also make it so that a pull request requires two
-people or more for review. The build plans I would put in place would be one for unit tests, and one for integration tests. I would also organise small cyclic meetings were
-developers from other projects would play with our code, and we do the same with theirs, in an attempt to make it break. Before every release, development branch would be frozen,
+people or more for review. The build plans I would put in place would be one for unit tests, and one for integration tests. 
+- I would also organise small cyclic meetings were developers from other projects would play with our code, and we do the same with theirs, in an attempt to make it break. Before every release, development branch would be frozen,
 and a new release branch would be created.
 
 ## How to run :
