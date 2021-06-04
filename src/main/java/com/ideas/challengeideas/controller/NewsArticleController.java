@@ -9,10 +9,9 @@ import com.ideas.challengeideas.service.NewsArticleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
-
 @RequestMapping("api/news-articles")
 public class NewsArticleController
 {
@@ -26,7 +25,7 @@ public class NewsArticleController
 
 
     @GetMapping
-    public Set<NewsArticleDTO> findNewsArticles()
+    public List<NewsArticleDTO> findNewsArticles()
     {
         return NewsArticleMapper.makeNewsArticleDTOList(this.newsArticleService.find());
     }
@@ -56,14 +55,14 @@ public class NewsArticleController
 
 
     @PutMapping("/{id}/title")
-    public void updateTitle(@PathVariable Long id, @RequestParam String title) throws EntityNotFoundException, ConstraintsViolationException
+    public void updateTitle(@PathVariable Long id, @RequestParam String title) throws EntityNotFoundException
     {
         this.newsArticleService.updateTitle(id, title);
     }
 
 
     @PutMapping("/{id}/text")
-    public void updateText(@PathVariable Long id, @RequestParam String text) throws EntityNotFoundException, ConstraintsViolationException
+    public void updateText(@PathVariable Long id, @RequestParam String text) throws EntityNotFoundException
     {
         this.newsArticleService.updateTitle(id, text);
     }

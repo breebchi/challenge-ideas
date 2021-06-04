@@ -1,17 +1,13 @@
 package com.ideas.challengeideas.dataaccessobject;
 
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.Set;
 
-public interface NewsArticleRepository
+@Repository
+public interface NewsArticleRepository extends JpaRepository<NewsArticleDO, Long>
 {
-    Set<NewsArticleDO> findAll();
-
     Optional<NewsArticleDO> findByTitle(String title);
-
-    Optional<NewsArticleDO> findById(Long id);
-
-    NewsArticleDO save(NewsArticleDO newsArticle);
 }

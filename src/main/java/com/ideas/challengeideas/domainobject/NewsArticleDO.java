@@ -1,21 +1,34 @@
 package com.ideas.challengeideas.domainobject;
 
-import org.springframework.lang.NonNull;
-
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@Entity
+@Table(
+    uniqueConstraints = @UniqueConstraint(name = "uc_title", columnNames = {"title"})
+)
 public class NewsArticleDO
 {
-    @NonNull
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
-
-    @NonNull
+    @Column(nullable = false)
+    @NotNull(message = "Title can not be null!")
     private String title;
-
+    @Column(nullable = false)
+    @NotNull(message = "Text can not be null!")
     private String text;
-
-    @NonNull
+    @Column(nullable = false)
+    @NotNull(message = "Creation date can not be null!")
     private LocalDate dateCreated;
+
+
+    public NewsArticleDO()
+    {
+    }
 
 
     public NewsArticleDO(Long id, String title, String text, LocalDate dateCreated)

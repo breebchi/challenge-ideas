@@ -2,6 +2,7 @@ package com.ideas.challengeideas.service.newsarticle;
 
 import com.ideas.challengeideas.dataaccessobject.NewsArticleRepository;
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
+import com.ideas.challengeideas.exception.ConstraintsViolationException;
 import com.ideas.challengeideas.exception.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,11 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -30,12 +32,16 @@ public class DefaultNewsArticleServiceTest
     DefaultNewsArticleService newsArticleService;
     @Mock
     NewsArticleRepository newsArticleRepository;
+    private Validator validator;
 
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         MockitoAnnotations.initMocks(this);
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
     }
 
 
@@ -63,7 +69,7 @@ public class DefaultNewsArticleServiceTest
     public void findAll()
     {
         // Here we initialize NewsArticleDO objects
-        Set<NewsArticleDO> newsArticles = new HashSet<>();
+        List<NewsArticleDO> newsArticles = new ArrayList<>();
         newsArticles.add(new NewsArticleDO(1L, "Title example", "Text example", LocalDate.now()));
         newsArticles.add(new NewsArticleDO(2L, "Title example 2", "Text example", LocalDate.now()));
         newsArticles.add(new NewsArticleDO(3L, "Title example 3", "Text example", LocalDate.now()));
@@ -79,20 +85,29 @@ public class DefaultNewsArticleServiceTest
     public void findShouldReturnEmptyListWhenNoFeatureWasSpecified()
     {
         // Here we tell Mockito what to we want the repository method that we call to return
-        when(newsArticleRepository.findAll()).thenReturn(Collections.emptySet());
+        when(newsArticleRepository.findAll()).thenReturn(Collections.emptyList());
         // Here we compare the results we got to the expected values.
         assertEquals(0, newsArticleService.find().size());
     }
 
 
     @Test
-    public void create()
+    public void create() throws ConstraintsViolationException
     {
         NewsArticleDO newsArticle = new NewsArticleDO(1L, "Title example", "Text example", LocalDate.now());
-        when(newsArticleRepository.save(newsArticle)).thenReturn(newsArticle);
         when(newsArticleRepository.save(newsArticle)).thenReturn(newsArticle);
         assertEquals(newsArticle, newsArticleService.create(newsArticle));
     }
 
+
+    @Test
+    public void createShouldThrowConstraintsViolationExceptionWhenFieldValueNotValid() throws ConstraintsViolationException
+    {
+
+        NewsArticleDO newsArticle = new NewsArticleDO(1L, null, "Text example", LocalDate.now());
+        when(newsArticleRepository.save(newsArticle)).thenReturn(newsArticle);
+        Set<ConstraintViolation<NewsArticleDO>> violations = validator.validate(newsArticleService.create(newsArticle));
+        assertEquals(1, violations.size());
+    }
 
 }

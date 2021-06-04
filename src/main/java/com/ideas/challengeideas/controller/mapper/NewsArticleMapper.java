@@ -4,7 +4,7 @@ import com.ideas.challengeideas.datatransferobject.NewsArticleDTO;
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class NewsArticleMapper
@@ -32,10 +32,10 @@ public class NewsArticleMapper
     }
 
 
-    public static Set<NewsArticleDTO> makeNewsArticleDTOList(Collection<NewsArticleDO> newsArticles)
+    public static List<NewsArticleDTO> makeNewsArticleDTOList(Collection<NewsArticleDO> newsArticles)
     {
         return newsArticles.stream()
             .map(NewsArticleMapper::makeNewsArticleDTO)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 }

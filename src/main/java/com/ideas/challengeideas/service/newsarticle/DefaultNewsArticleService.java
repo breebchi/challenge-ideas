@@ -2,11 +2,14 @@ package com.ideas.challengeideas.service.newsarticle;
 
 import com.ideas.challengeideas.dataaccessobject.NewsArticleRepository;
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
+import com.ideas.challengeideas.exception.ConstraintsViolationException;
 import com.ideas.challengeideas.exception.EntityNotFoundException;
 import com.ideas.challengeideas.service.NewsArticleService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class DefaultNewsArticleService implements NewsArticleService
@@ -21,6 +24,7 @@ public class DefaultNewsArticleService implements NewsArticleService
 
 
     @Override
+    @Transactional
     public NewsArticleDO find(Long id) throws EntityNotFoundException
     {
         return this.newsArticleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Could not find entity with id: " + id));
@@ -28,6 +32,7 @@ public class DefaultNewsArticleService implements NewsArticleService
 
 
     @Override
+    @Transactional
     public NewsArticleDO find(String title) throws EntityNotFoundException
     {
         return this.newsArticleRepository.findByTitle(title).orElseThrow(() -> new EntityNotFoundException("Could not find entity with identifier: " + title));
@@ -35,20 +40,32 @@ public class DefaultNewsArticleService implements NewsArticleService
 
 
     @Override
-    public Set<NewsArticleDO> find()
+    @Transactional
+    public List<NewsArticleDO> find()
     {
         return this.newsArticleRepository.findAll();
     }
 
 
     @Override
-    public NewsArticleDO create(NewsArticleDO newsArticle)
+    @Transactional(rollbackFor = {ConstraintsViolationException.class})
+    public NewsArticleDO create(NewsArticleDO newsArticle) throws ConstraintsViolationException
     {
-        return this.newsArticleRepository.save(newsArticle);
+        try
+        {
+            return this.newsArticleRepository.save(newsArticle);
+
+        }
+        catch (DataIntegrityViolationException e)
+        {
+            throw new ConstraintsViolationException(String.format("ConstraintsViolationException while creating a contact: %s", newsArticle.toString()), e);
+        }
     }
 
 
-    @Override public void updateTitle(Long id, String title) throws EntityNotFoundException
+    @Override
+    @Transactional
+    public void updateTitle(Long id, String title) throws EntityNotFoundException
     {
         NewsArticleDO newsArticleDO = this.newsArticleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Could not find entity with id: " + id));
         newsArticleDO.setTitle(title);
@@ -56,7 +73,9 @@ public class DefaultNewsArticleService implements NewsArticleService
     }
 
 
-    @Override public void updateText(Long id, String text) throws EntityNotFoundException
+    @Override
+    @Transactional
+    public void updateText(Long id, String text) throws EntityNotFoundException
     {
         NewsArticleDO newsArticleDO = this.newsArticleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Could not find entity with id: " + id));
         newsArticleDO.setTitle(text);

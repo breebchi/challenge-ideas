@@ -1,9 +1,10 @@
 package com.ideas.challengeideas.service;
 
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
+import com.ideas.challengeideas.exception.ConstraintsViolationException;
 import com.ideas.challengeideas.exception.EntityNotFoundException;
 
-import java.util.Set;
+import java.util.List;
 
 public interface NewsArticleService
 {
@@ -11,9 +12,9 @@ public interface NewsArticleService
 
     NewsArticleDO find(String title) throws EntityNotFoundException;
 
-    Set<NewsArticleDO> find();
+    List<NewsArticleDO> find();
 
-    NewsArticleDO create(NewsArticleDO newsArticle);
+    NewsArticleDO create(NewsArticleDO newsArticle) throws ConstraintsViolationException;
 
     void updateTitle(Long id, String title) throws EntityNotFoundException;
 
