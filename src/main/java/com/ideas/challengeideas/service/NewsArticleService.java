@@ -1,6 +1,7 @@
 package com.ideas.challengeideas.service;
 
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
+import com.ideas.challengeideas.domainvalue.Relevance;
 import com.ideas.challengeideas.exception.ConstraintsViolationException;
 import com.ideas.challengeideas.exception.EntityNotFoundException;
 
@@ -19,4 +20,6 @@ public interface NewsArticleService
     void updateTitle(Long id, String title) throws EntityNotFoundException;
 
     void updateText(Long id, String texst) throws EntityNotFoundException;
+
+    Relevance getRelevance(Long id) throws EntityNotFoundException;
 }

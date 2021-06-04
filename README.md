@@ -9,7 +9,7 @@
 - create a news article :
 
 ```
-  curl -X POST "http://localhost:8080/api/news-articles" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"dateCreated\": \"2021-03-03\", \"id\": 2, \"text\": \"Test\", \"title\": \"Testsd\"}"
+  curl -X POST "http://localhost:8080/api/news-articles" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"dateCreated\": \"2021-03-03 03:03:03\", \"id\": 0, \"text\": \"Test\", \"title\": \"Testsd\"}"
 ```
 
 - find a news article by id :

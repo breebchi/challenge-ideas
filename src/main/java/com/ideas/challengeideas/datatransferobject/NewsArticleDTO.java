@@ -3,7 +3,7 @@ package com.ideas.challengeideas.datatransferobject;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.lang.NonNull;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class NewsArticleDTO
 {
@@ -21,10 +21,10 @@ public class NewsArticleDTO
 
     @NonNull
     @ApiModelProperty(value = "Date of creation of the news article.")
-    private LocalDate dateCreated;
+    private LocalDateTime dateCreated;
 
 
-    private NewsArticleDTO(@NonNull Long id, @NonNull String title, String text, @NonNull LocalDate dateCreated)
+    private NewsArticleDTO(@NonNull Long id, @NonNull String title, String text, @NonNull LocalDateTime dateCreated)
     {
         this.id = id;
         this.title = title;
@@ -63,7 +63,7 @@ public class NewsArticleDTO
     }
 
 
-    @NonNull public LocalDate getDateCreated()
+    @NonNull public LocalDateTime getDateCreated()
     {
         return dateCreated;
     }
@@ -74,7 +74,7 @@ public class NewsArticleDTO
         private Long id;
         private String title;
         private String text;
-        private LocalDate dateCreated;
+        private LocalDateTime dateCreated;
 
 
         private NewsArticleDTOBuilder()
@@ -109,7 +109,7 @@ public class NewsArticleDTO
         }
 
 
-        public NewsArticleDTOBuilder setDateCreated(LocalDate dateCreated)
+        public NewsArticleDTOBuilder setDateCreated(LocalDateTime dateCreated)
         {
             this.dateCreated = dateCreated;
             return this;

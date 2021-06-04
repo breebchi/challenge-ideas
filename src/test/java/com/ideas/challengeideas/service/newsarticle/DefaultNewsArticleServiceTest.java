@@ -14,7 +14,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -49,7 +49,7 @@ public class DefaultNewsArticleServiceTest
     public void findById() throws EntityNotFoundException
     {
         // Here we initialize a NewsArticleDO object
-        NewsArticleDO newsArticle = new NewsArticleDO(1L, "Title example", "Text example", LocalDate.now());
+        NewsArticleDO newsArticle = new NewsArticleDO(1L, "Title example", "Text example", LocalDateTime.now());
         // Here we tell Mockito what to we want the repository method that we call to return.
         when(newsArticleRepository.findById(newsArticle.getId())).thenReturn(Optional.of(newsArticle));
         // Here we compare the results we got to the expected values.
@@ -70,9 +70,9 @@ public class DefaultNewsArticleServiceTest
     {
         // Here we initialize NewsArticleDO objects
         List<NewsArticleDO> newsArticles = new ArrayList<>();
-        newsArticles.add(new NewsArticleDO(1L, "Title example", "Text example", LocalDate.now()));
-        newsArticles.add(new NewsArticleDO(2L, "Title example 2", "Text example", LocalDate.now()));
-        newsArticles.add(new NewsArticleDO(3L, "Title example 3", "Text example", LocalDate.now()));
+        newsArticles.add(new NewsArticleDO(1L, "Title example", "Text example", LocalDateTime.now()));
+        newsArticles.add(new NewsArticleDO(2L, "Title example 2", "Text example", LocalDateTime.now()));
+        newsArticles.add(new NewsArticleDO(3L, "Title example 3", "Text example", LocalDateTime.now()));
         // Here we tell Mockito what to we want the repository method that we call to return.
         when(newsArticleRepository.findAll()).thenReturn(newsArticles);
         // Here we compare the results we got to the expected values.
@@ -94,7 +94,7 @@ public class DefaultNewsArticleServiceTest
     @Test
     public void create() throws ConstraintsViolationException
     {
-        NewsArticleDO newsArticle = new NewsArticleDO(1L, "Title example", "Text example", LocalDate.now());
+        NewsArticleDO newsArticle = new NewsArticleDO(1L, "Title example", "Text example", LocalDateTime.now());
         when(newsArticleRepository.save(newsArticle)).thenReturn(newsArticle);
         assertEquals(newsArticle, newsArticleService.create(newsArticle));
     }
@@ -104,10 +104,9 @@ public class DefaultNewsArticleServiceTest
     public void createShouldThrowConstraintsViolationExceptionWhenFieldValueNotValid() throws ConstraintsViolationException
     {
 
-        NewsArticleDO newsArticle = new NewsArticleDO(1L, null, "Text example", LocalDate.now());
+        NewsArticleDO newsArticle = new NewsArticleDO(1L, null, "Text example", LocalDateTime.now());
         when(newsArticleRepository.save(newsArticle)).thenReturn(newsArticle);
         Set<ConstraintViolation<NewsArticleDO>> violations = validator.validate(newsArticleService.create(newsArticle));
         assertEquals(1, violations.size());
     }
-
 }

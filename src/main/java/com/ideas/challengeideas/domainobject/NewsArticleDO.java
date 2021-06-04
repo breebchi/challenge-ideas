@@ -1,8 +1,11 @@
 package com.ideas.challengeideas.domainobject;
 
+import com.ideas.challengeideas.domainvalue.Relevance;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(
@@ -23,7 +26,7 @@ public class NewsArticleDO
     private String text;
     @Column(nullable = false)
     @NotNull(message = "Creation date can not be null!")
-    private LocalDate dateCreated;
+    private LocalDateTime dateCreated;
 
 
     public NewsArticleDO()
@@ -31,7 +34,7 @@ public class NewsArticleDO
     }
 
 
-    public NewsArticleDO(Long id, String title, String text, LocalDate dateCreated)
+    public NewsArticleDO(Long id, String title, String text, LocalDateTime dateCreated)
     {
         this.id = id;
         this.title = title;
@@ -76,14 +79,61 @@ public class NewsArticleDO
     }
 
 
-    public LocalDate getDateCreated()
+    public LocalDateTime getDateCreated()
     {
         return dateCreated;
     }
 
 
-    public void setDateCreated(LocalDate dateCreated)
+    public void setDateCreated(LocalDateTime dateCreated)
     {
         this.dateCreated = dateCreated;
+    }
+
+
+    private long countOccurrence(Character character)
+    {
+        return text.chars().filter(ch -> ch == character).count();
+    }
+
+
+    private boolean moreExplanationMarksThanFullStops()
+    {
+        return countOccurrence('!') > countOccurrence('.');
+    }
+
+
+    private boolean moreCommasThanFullStops()
+    {
+        return countOccurrence(',') > countOccurrence('.');
+    }
+
+
+    private boolean createdWithinTheLastMinute()
+    {
+        return dateCreated.isAfter(LocalDateTime.now().minus(1, ChronoUnit.MINUTES));
+    }
+
+
+    private boolean createdWithinTheLastFiveMinutes()
+    {
+        return dateCreated.isAfter(LocalDateTime.now().minus(5, ChronoUnit.MINUTES));
+    }
+
+
+    public Relevance getRelevance()
+    {
+        if (moreExplanationMarksThanFullStops() && createdWithinTheLastMinute())
+        {
+            return Relevance.HOT;
+        }
+        else if (moreCommasThanFullStops() && createdWithinTheLastFiveMinutes())
+        {
+            return Relevance.BORING;
+        }
+        else
+        {
+            return Relevance.STANDARD;
+        }
     }
 }

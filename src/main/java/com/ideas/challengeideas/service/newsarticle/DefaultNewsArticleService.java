@@ -2,6 +2,7 @@ package com.ideas.challengeideas.service.newsarticle;
 
 import com.ideas.challengeideas.dataaccessobject.NewsArticleRepository;
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
+import com.ideas.challengeideas.domainvalue.Relevance;
 import com.ideas.challengeideas.exception.ConstraintsViolationException;
 import com.ideas.challengeideas.exception.EntityNotFoundException;
 import com.ideas.challengeideas.service.NewsArticleService;
@@ -82,4 +83,12 @@ public class DefaultNewsArticleService implements NewsArticleService
         this.newsArticleRepository.save(newsArticleDO);
     }
 
+
+    @Override
+    @Transactional
+    public Relevance getRelevance(Long id) throws EntityNotFoundException
+    {
+        NewsArticleDO newsArticleDO = this.newsArticleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Could not find entity with id: " + id));
+        return newsArticleDO.getRelevance();
+    }
 }

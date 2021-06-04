@@ -3,6 +3,7 @@ package com.ideas.challengeideas.controller;
 import com.ideas.challengeideas.controller.mapper.NewsArticleMapper;
 import com.ideas.challengeideas.datatransferobject.NewsArticleDTO;
 import com.ideas.challengeideas.domainobject.NewsArticleDO;
+import com.ideas.challengeideas.domainvalue.Relevance;
 import com.ideas.challengeideas.exception.ConstraintsViolationException;
 import com.ideas.challengeideas.exception.EntityNotFoundException;
 import com.ideas.challengeideas.service.NewsArticleService;
@@ -65,5 +66,12 @@ public class NewsArticleController
     public void updateText(@PathVariable Long id, @RequestParam String text) throws EntityNotFoundException
     {
         this.newsArticleService.updateTitle(id, text);
+    }
+
+
+    @GetMapping("/{id}/relevance")
+    public Relevance getRelevance(@PathVariable Long id) throws EntityNotFoundException
+    {
+        return this.newsArticleService.getRelevance(id);
     }
 }
