@@ -1,3 +1,6 @@
+# A coding challenge
+This was a code that I wrote for a company with which I interviewed.
+
 ## Task 1.1
 
 Something that's very dear to a developer's heart is the knowledge that one's work is needed by somebody, and is being used. I am no exception. An example I can site is a project I
