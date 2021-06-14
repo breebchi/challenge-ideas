@@ -1,5 +1,5 @@
 # A coding challenge
-This was a code that I wrote for a company with which I interviewed.
+This was code that I wrote for a company with which I interviewed.
 
 ## Task 1.1
 
